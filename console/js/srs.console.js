@@ -201,6 +201,8 @@ scApp.controller("CSCStreams", ["$scope", "$location", "MSCApi", "$sc_nav", "$sc
             MSCApi.streams_get(function(data){
                 for (var k in data.streams) {
                     var stream = data.streams[k];
+
+                    console.log(`No.${parseInt(k) + 1} stream ==> ${JSON.stringify(stream)}`)
                     stream.owner = system_array_get(vhosts, function(vhost) {return vhost.id === stream.vhost; });
                 }
 
@@ -327,7 +329,8 @@ scApp.factory("MSCApi", ["$http", "$sc_server", function($http, $sc_server){
             $http.jsonp(url).success(success);
         },
         streams_get: function(success) {
-            var url = $sc_server.jsonp("/api/v1/streams/");
+            // var url = $sc_server.jsonp("/api/v1/streams/");
+            var url = $sc_server.jsonp_query("/api/v1/streams", "count=100");
             $http.jsonp(url).success(success);
         },
         streams_get2: function(id, success) {
